@@ -1,0 +1,1 @@
+GF180/workspace_setup/start_mag.sh

@@ -1,0 +1,5 @@
+#! /bin/sh
+
+export CAD_ROOT=/usr/local/lib
+export PDK_ROOT=/home/sonic/.volare
+export PDK=gf180mcuC

@@ -1,0 +1,6 @@
+[submodule "laygo2"]
+	path = laygo2
+	url = https://github.com/niftylab/laygo2.git
+[submodule "GF180"]
+	path = GF180
+	url = https://github.com/niftylab/GF180.git

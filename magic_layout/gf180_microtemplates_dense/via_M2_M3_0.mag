@@ -1,0 +1,13 @@
+magic
+tech gf180mcuC
+magscale 1 5
+timestamp 1683702753
+<< metal2 >>
+rect -22 -14 -15 14
+rect 15 -14 22 14
+<< via2 >>
+rect -15 -14 15 14
+<< metal3 >>
+rect -22 -14 -15 14
+rect 15 -14 22 14
+<< end >>

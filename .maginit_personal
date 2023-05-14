@@ -1,0 +1,5 @@
+addpath /WORK/hjpark/laygo2_workspace_sky130/magic_layout/gf180_microtemplates_dense
+addpath /WORK/hjpark/laygo2_workspace_sky130/magic_layout/logic_generated
+addpath /WORK/hjpark/laygo2_workspace_sky130/magic_layout/scan_generated
+addpath /WORK/hjpark/laygo2_workspace_sky130/magic_layout/logic_advanced
+addpath /WORK/hjpark/laygo2_workspace_sky130/magic_layout/verilog_to_laygo
