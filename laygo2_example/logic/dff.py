@@ -43,6 +43,7 @@ grids = tech.load_grids(templates=templates)
 pg, r12, r23, r34 = grids[pg_name], grids[r12_name], grids[r23_name], grids[r34_name]
 #print(grids[pg_name], grids[r12_name], grids[r23_basic_name], grids[r34_name], sep="\n")
 
+abut = [0,0]
 for nf in nf_list:
    cellname = cell_type+'_'+str(nf)+'x'
    print('--------------------')
@@ -68,19 +69,18 @@ for nf in nf_list:
 
 # 4. Place instances.
    dsn.place(grid=pg, inst=inv0, mn=[0,0])
-   dsn.place(grid=pg, inst=inv1, mn=pg.mn.bottom_right(inv0))
-   dsn.place(grid=pg, inst=tinv0, mn=pg.mn.bottom_right(inv1))
-   dsn.place(grid=pg, inst=tinv_small0, mn=pg.mn.bottom_right(tinv0))
-   dsn.place(grid=pg, inst=inv2, mn=pg.mn.bottom_right(tinv_small0))
-   dsn.place(grid=pg, inst=tinv1, mn=pg.mn.bottom_right(inv2))
-   dsn.place(grid=pg, inst=tinv_small1, mn=pg.mn.bottom_right(tinv1))
-   dsn.place(grid=pg, inst=inv3, mn=pg.mn.bottom_right(tinv_small1))
+   dsn.place(grid=pg, inst=inv1, mn=pg.mn.bottom_right(inv0)-abut)
+   dsn.place(grid=pg, inst=tinv0, mn=pg.mn.bottom_right(inv1)-abut)
+   dsn.place(grid=pg, inst=tinv_small0, mn=pg.mn.bottom_right(tinv0)-abut)
+   dsn.place(grid=pg, inst=inv2, mn=pg.mn.bottom_right(tinv_small0)-abut)
+   dsn.place(grid=pg, inst=tinv1, mn=pg.mn.bottom_right(inv2)-abut)
+   dsn.place(grid=pg, inst=tinv_small1, mn=pg.mn.bottom_right(tinv1)-abut)
+   dsn.place(grid=pg, inst=inv3, mn=pg.mn.bottom_right(tinv_small1)-abut)
    
    # 5. Create and place wires.
    print("Create wires")
    
    # 1st M4
-   
    _mn = [r34.mn(inv1.pins['O'])[0], r34.mn(tinv_small1.pins['ENB'])[0]]
    _track = [None, r34.mn(inv1.pins['O'])[0,1]-2]
    mn_list=[]
@@ -102,32 +102,33 @@ for nf in nf_list:
    mn_list.append(r34.mn(tinv_small1.pins['EN'])[0])
    dsn.route_via_track(grid=r34, mn=mn_list, track=_track)
    
-   # 3rd M4
-   _track[1] += 1
+   # 1st M2
+   mn_list=[]
+   mn_list.append(r23.mn(inv2.pins['O'])[0])
+   mn_list.append(r23.mn(tinv_small0.pins['I'])[0])
+   mn_list.append(r23.mn(tinv1.pins['I'])[0])
+   _track = [None, (r23.mn(tinv_small0.pins['I'])[0,1]+r23.mn(tinv_small0.pins['I'])[1,1])/2]
+   dsn.route_via_track(grid=r23, mn=mn_list, track=_track)
+   # 2nd M2
    mn_list=[]
    mn_list.append(r34.mn(inv2.pins['I'])[0])
    mn_list.append(r34.mn(tinv0.pins['O'])[0])
    mn_list.append(r34.mn(tinv_small0.pins['O'])[0])
-   dsn.route_via_track(grid=r34, mn=mn_list, track=_track)
- 
+   _track = [None, r23.mn(tinv0.pins['O'])[0,1]]
+   dsn.route_via_track(grid=r23, mn=mn_list, track=_track)
+   # 3rd M2
    mn_list=[]
    mn_list.append(r34.mn(inv3.pins['I'])[0])
    mn_list.append(r34.mn(tinv1.pins['O'])[0])
    mn_list.append(r34.mn(tinv_small1.pins['O'])[0])
-   dsn.route_via_track(grid=r34, mn=mn_list, track=_track)
-   
-   # 4th M4
-   _track[1] += 1
-   mn_list=[]
-   mn_list.append(r34.mn(inv2.pins['O'])[0])
-   mn_list.append(r34.mn(tinv1.pins['I'])[0])
-   mn_list.append(r34.mn(tinv_small0.pins['I'])[0])
-   dsn.route_via_track(grid=r34, mn=mn_list, track=_track)
-  
+   _track = [None, r23.mn(tinv1.pins['O'])[0,1]]
+   dsn.route_via_track(grid=r23, mn=mn_list, track=_track)
+   # 4th M2
    mn_list=[]
    mn_list.append(r34.mn(inv3.pins['O'])[0])
    mn_list.append(r34.mn(tinv_small1.pins['I'])[0]) 
-   dsn.route_via_track(grid=r34, mn=mn_list, track=_track)
+   _track = [None, r23.mn(inv3.pins['O'])[0,1]]
+   dsn.route_via_track(grid=r23, mn=mn_list, track=_track)
   
    # VSS
    rvss0 = dsn.route(grid=r12, mn=[r12.mn.bottom_left(inv0), r12.mn.bottom_right(inv3)])
@@ -146,7 +147,7 @@ for nf in nf_list:
    print("Export design")
    
    # Uncomment for BAG export
-   laygo2.interface.magic.export(lib, filename=ref_dir_MAG_exported +libname+'_'+cellname+'.tcl', cellname=None, libpath=ref_dir_layout, scale=0.1, reset_library=False, tech_library=tech.name)
+   laygo2.interface.magic.export(lib, filename=ref_dir_MAG_exported +libname+'_'+cellname+'.tcl', cellname=None, libpath=ref_dir_layout, scale=tech.scale, reset_library=False, tech_library=tech.name)
    
    # 8. Export to a template database file.
    nat_temp = dsn.export_to_template()

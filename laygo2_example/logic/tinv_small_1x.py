@@ -56,24 +56,20 @@ nstack = templates['nmos180_fast_center_2stack'].generate(name='nstack')
 nbndl = templates['nmos180_fast_boundary'].generate(name='nbndl')
 nbndr = templates['nmos180_fast_boundary'].generate(name='nbndr')
 nspace0 = templates['nmos180_fast_space'].generate(name='nspace0')
-nspace1 = templates['nmos180_fast_space'].generate(name='nspace1')
 pstack = templates['pmos180_fast_center_2stack'].generate(name='pstack', transform='MX')
 pbndl = templates['pmos180_fast_boundary'].generate(name='pbndl', transform='MX')
 pbndr = templates['pmos180_fast_boundary'].generate(name='pbndr', transform='MX')
 pspace0 = templates['pmos180_fast_space'].generate(name='pspace0', transform='MX')
-pspace1 = templates['pmos180_fast_space'].generate(name='pspace1', transform='MX')
 
 # 4. Place instances.
 dsn.place(grid=pg, inst=nbndl, mn=[0,0])
 dsn.place(grid=pg, inst=nstack, mn=pg.mn.bottom_right(nbndl))
 dsn.place(grid=pg, inst=nbndr, mn=pg.mn.bottom_right(nstack))
 dsn.place(grid=pg, inst=nspace0, mn=pg.mn.bottom_right(nbndr))
-dsn.place(grid=pg, inst=nspace1, mn=pg.mn.bottom_right(nspace0))
 dsn.place(grid=pg, inst=pbndl, mn=pg.mn.top_left(nbndl)+pg.mn.height_vec(pbndl))
 dsn.place(grid=pg, inst=pstack, mn=pg.mn.top_right(pbndl))
 dsn.place(grid=pg, inst=pbndr, mn=pg.mn.top_right(pstack))
 dsn.place(grid=pg, inst=pspace0, mn=pg.mn.top_right(pbndr))
-dsn.place(grid=pg, inst=pspace1, mn=pg.mn.top_right(pspace0))
 
 # 5. Create and place wires.
 print("Create wires")
@@ -83,7 +79,7 @@ _mn = [r12.mn(nstack.pins['G0'])[0], r12.mn(pstack.pins['G0'])[0]]
 rin0 = dsn.route(grid=r23, mn=_mn)
 _mn = [r12.mn(nstack.pins['G0'])[0], r12.mn(pstack.pins['G0'])[0]]
 dsn.route(grid=r12, mn=_mn)
-_mn = [np.mean(r23.mn.bbox(rin0), axis=0, dtype=int), np.mean(r23.mn.bbox(rin0), axis=0, dtype=int)+[2,0]]
+_mn = [np.mean(r23.mn.bbox(rin0), axis=0, dtype=int), np.mean(r23.mn.bbox(rin0), axis=0, dtype=int)+[1,0]]
 dsn.route(grid=r23, mn=_mn, via_tag=[True, False])
 dsn.via(grid=r12, mn=np.mean(r23.mn.bbox(rin0), axis=0, dtype=int))
 
@@ -109,7 +105,7 @@ renb1 = dsn.route(grid=r23, mn=_mn)
 
 # VSS  
 # M2 Rect
-_mn = [r12.mn.bottom_left(nbndl), r12.mn.bottom_right(nspace1)]
+_mn = [r12.mn.bottom_left(nbndl), r12.mn.bottom_right(nspace0)]
 rvss0 = dsn.route(grid=r12, mn=_mn)
 
 # tie
@@ -118,7 +114,7 @@ rvss1, _ = dsn.route(grid=r12, mn=_mn, via_tag=[False, True])
 
 # VDD
 # M2 Rect
-_mn = [r12.mn.top_left(pbndl), r12.mn.top_right(pspace1)]
+_mn = [r12.mn.top_left(pbndl), r12.mn.top_right(pspace0)]
 rvdd0 = dsn.route(grid=r12, mn=_mn)
 
 # tie
@@ -126,9 +122,9 @@ _mn = [r12.mn(pstack.pins['S0'])[1], r12.mn(rvdd0)[0]+[1,0]]
 rvdd1 = dsn.route(grid=r12, mn=_mn, via_tag=[False, True])
 
 # DRC ISSUE
-_mn = [r23.mn(nstack.pins['D0'])[0], r23.mn(nstack.pins['D0'])[0]+[-2,0]]
+_mn = [r23.mn(nstack.pins['D0'])[0], r23.mn(nstack.pins['D0'])[0]+[-1,0]]
 dsn.route(grid=r23, mn=_mn)
-_mn = [r23.mn(pstack.pins['D0'])[1], r23.mn(pstack.pins['D0'])[1]+[-2,0]]
+_mn = [r23.mn(pstack.pins['D0'])[1], r23.mn(pstack.pins['D0'])[1]+[-1,0]]
 dsn.route(grid=r23, mn=_mn)
 # _mn = [r23.mn(nstack.pins['G1'])[0], r23.mn(nstack.pins['G1'])[0]+[2,0]]
 # dsn.route(grid=r23, mn=_mn)
@@ -147,7 +143,7 @@ pvdd0 = dsn.pin(name='VDD', grid=r12, mn=r12.bbox(rvdd0))
 print("Export design")
 
 # Uncomment for BAG export
-laygo2.interface.magic.export(lib, filename=ref_dir_MAG_exported +libname+'_'+cellname+'.tcl', cellname=None, libpath=ref_dir_layout, scale=0.1, reset_library=False, tech_library=tech.name)
+laygo2.interface.magic.export(lib, filename=ref_dir_MAG_exported +libname+'_'+cellname+'.tcl', cellname=None, libpath=ref_dir_layout, scale=tech.scale, reset_library=False, tech_library=tech.name)
 
 # 8. Export to a template database file.
 nat_temp = dsn.export_to_template()

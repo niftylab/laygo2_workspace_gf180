@@ -178,7 +178,7 @@ for nf in nf_list:
 # 7. Export to physical database.
    print("Export design")
    print("")
-   laygo2.interface.magic.export(lib, filename=ref_dir_MAG_exported +libname+'_'+cellname+'.tcl', cellname=None, libpath=ref_dir_layout, scale=0.1, reset_library=False, tech_library=tech.name)
+   laygo2.interface.magic.export(lib, filename=ref_dir_MAG_exported +libname+'_'+cellname+'.tcl', cellname=None, libpath=ref_dir_layout, scale=tech.scale, reset_library=False, tech_library=tech.name)
    # Filename example: ./laygo2_generators_private/logic/skill/logic_generated_mux2to1_2x.il
    
 # 8. Export to a template database file.

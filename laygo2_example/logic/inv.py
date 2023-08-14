@@ -10,7 +10,6 @@ import pprint
 import laygo2
 import laygo2.interface
 import laygo2_tech as tech
-
 # Parameter definitions #############
 # Variables
 cell_type = ['inv', 'inv_hs']
@@ -35,18 +34,15 @@ ref_dir_layout = './magic_layout'
 print("Load templates")
 templates = tech.load_templates()
 tpmos, tnmos = templates[tpmos_name], templates[tnmos_name]
-#tlib = laygo2.interface.yaml.import_template(filename=ref_dir_template+'logic_generated_templates.yaml')
-print(templates[tpmos_name], templates[tnmos_name], sep="\n")
+#print(templates[tpmos_name], templates[tnmos_name], sep="\n")
 
 print("Load grids")
 grids = tech.load_grids(templates=templates)
 pg, r12, r23 = grids[pg_name], grids[r12_name], grids[r23_name]
-print(grids[pg_name], grids[r12_name], grids[r23_name], sep="\n")
-
-lib = laygo2.object.database.Library(name=libname)
-
+#print(grids[pg_name], grids[r12_name], grids[r23_name], sep="\n")
 
 for celltype in cell_type:
+   lib = laygo2.object.database.Library(name=libname)
    for nf in nf_list:
       cellname = celltype+'_'+str(nf)+'x'
       print('--------------------')
@@ -94,13 +90,11 @@ for celltype in cell_type:
          pout0 = dsn.pin(name='O', grid=r23, mn=r23.mn.bbox(rout0))
       pvss0 = dsn.pin(name='VSS', grid=r12, mn=r12.mn.bbox(rvss0))
       pvdd0 = dsn.pin(name='VDD', grid=r12, mn=r12.mn.bbox(rvdd0))
-      
+
       # 7. Export to physical database.
       print("Export design")
       print("")
-      
-      # Uncomment for BAG export
-      laygo2.interface.magic.export(lib, filename=ref_dir_MAG_exported +libname+'_'+cellname+'.tcl', cellname=None, libpath=ref_dir_layout, scale=0.1, reset_library=False, tech_library=tech.name)
       # 8. Export to a template database file.
       nat_temp = dsn.export_to_template()
       laygo2.interface.yaml.export_template(nat_temp, filename=ref_dir_template+libname+'_templates.yaml', mode='append')
+      laygo2.interface.magic.export(lib, filename=ref_dir_MAG_exported +libname+'_'+cellname+'.tcl', cellname=None, libpath=ref_dir_layout, scale=tech.scale, reset_library=False, tech_library=tech.name)

@@ -1,0 +1,149 @@
+** sch_path:
+*+ /home/sonic/gf180_tutorial/laygo2_workspace_gf180/xschem_lib/DFFRAM_full_custom/byte_dff.sch
+.subckt byte_dff Do<7> Di<7> Do<6> Di<6> Do<5> Di<5> Do<4> Di<4> Do<3> Di<3> Do<2> Di<2> Do<1> Di<1>
++ Do<0> Di<0> WE SEL CLK VDD VSS RE
+*.PININFO Do<7>:O Di<7>:I Do<6>:O Di<6>:I Do<5>:O Di<5>:I Do<4>:O Di<4>:I Do<3>:O Di<3>:I Do<2>:O
+*+ Di<2>:I Do<1>:O Di<1>:I Do<0>:O Di<0>:I WE:I SEL:I CLK:I VDD:B VSS:B RE:I
+X_nand1 SEL WE net1 VDD VSS nand NF=1
+X_inv1 net1 VDD VSS net2 inv NF=2
+X_inv2 RE VDD VSS RE_bar inv NF=NF*3
+x1 VDD net2 ck_o CLK VSS clk_gate NF=1
+xDFF1 VDD VSS tinv_in7 dffout7 Di<7> ck_o DFF NF=1
+X_tinv1 tinv_in7 RE_buf RE_bar VDD VSS Do<7> tinv NF=NF
+xDFF2 VDD VSS tinv_in6 dffout6 Di<6> ck_o DFF NF=1
+xDFF3 VDD VSS tinv_in5 dffout5 Di<5> ck_o DFF NF=1
+xDFF4 VDD VSS tinv_in4 dffout4 Di<4> ck_o DFF NF=1
+xDFF5 VDD VSS tinv_in3 dffout3 Di<3> ck_o DFF NF=1
+xDFF6 VDD VSS tinv_in2 dffout2 Di<2> ck_o DFF NF=1
+xDFF7 VDD VSS tinv_in1 dffout1 Di<1> ck_o DFF NF=1
+xDFF8 VDD VSS tinv_in0 dffout0 Di<0> ck_o DFF NF=1
+X_tinv2 tinv_in6 RE_buf RE_bar VDD VSS Do<6> tinv NF=NF
+X_tinv3 tinv_in5 RE_buf RE_bar VDD VSS Do<5> tinv NF=NF
+X_tinv4 tinv_in4 RE_buf RE_bar VDD VSS Do<4> tinv NF=NF
+X_tinv5 tinv_in3 RE_buf RE_bar VDD VSS Do<3> tinv NF=NF
+X_tinv6 tinv_in2 RE_buf RE_bar VDD VSS Do<2> tinv NF=NF
+X_tinv7 tinv_in1 RE_buf RE_bar VDD VSS Do<1> tinv NF=NF
+X_tinv8 tinv_in0 RE_buf RE_bar VDD VSS Do<0> tinv NF=NF
+X_inv3 RE_bar VDD VSS RE_buf inv NF=NF*3
+.ends
+
+* expanding   symbol:  xschem_lib/DFFRAM_full_custom/nand.sym # of pins=5
+** sym_path:
+*+ /home/sonic/gf180_tutorial/laygo2_workspace_gf180/xschem_lib/DFFRAM_full_custom/nand.sym
+** sch_path:
+*+ /home/sonic/gf180_tutorial/laygo2_workspace_gf180/xschem_lib/DFFRAM_full_custom/nand.sch
+.subckt nand  B A Y VDD VSS   NF=2
+*.PININFO Y:O A:I VDD:B VSS:B B:I
+XM2 net1 B VSS VSS nfet_03v3 L=0.28u W=NF*0.85u nf=NF ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+XM3 Y B VDD VDD pfet_03v3 L=0.28u W=NF*1.7u nf=NF ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+XM4 Y A VDD VDD pfet_03v3 L=0.28u W=NF*1.7u nf=NF ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+XM1 Y A net1 VSS nfet_03v3 L=0.28u W=NF*0.85u nf=NF ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+.ends
+
+
+* expanding   symbol:  xschem_lib/DFFRAM_full_custom/inv.sym # of pins=4
+** sym_path: /home/sonic/gf180_tutorial/laygo2_workspace_gf180/xschem_lib/DFFRAM_full_custom/inv.sym
+** sch_path: /home/sonic/gf180_tutorial/laygo2_workspace_gf180/xschem_lib/DFFRAM_full_custom/inv.sch
+.subckt inv  X VDD VSS Y   NF=2
+*.PININFO VSS:B X:I Y:O VDD:B
+XM1 Y X VSS VSS nfet_03v3 L=0.28u W=NF*0.85u nf=NF ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+XM2 Y X VDD VDD pfet_03v3 L=0.28u W=NF*1.7u nf=NF ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+.ends
+
+
+* expanding   symbol:  xschem_lib/DFFRAM_full_custom/clk_gate.sym # of pins=5
+** sym_path:
+*+ /home/sonic/gf180_tutorial/laygo2_workspace_gf180/xschem_lib/DFFRAM_full_custom/clk_gate.sym
+** sch_path:
+*+ /home/sonic/gf180_tutorial/laygo2_workspace_gf180/xschem_lib/DFFRAM_full_custom/clk_gate.sch
+.subckt clk_gate  VDD EN CK_O CK_I VSS   NF=2
+*.PININFO CK_I:I VDD:B VSS:B EN:I CK_O:O
+X_inv1 CK_I VDD VSS net1 inv NF=1
+X_latch1 EN net1 CK_I VSS VDD net2 latch NF=NF
+X_nand1 CK_I net2 net3 VDD VSS nand NF=NF*2
+X_inv2 net3 VDD VSS CK_O inv NF=NF*6
+.ends
+
+
+* expanding   symbol:  xschem_lib/DFFRAM_full_custom/DFF.sym # of pins=6
+** sym_path: /home/sonic/gf180_tutorial/laygo2_workspace_gf180/xschem_lib/DFFRAM_full_custom/DFF.sym
+** sch_path: /home/sonic/gf180_tutorial/laygo2_workspace_gf180/xschem_lib/DFFRAM_full_custom/DFF.sch
+.subckt DFF  VDD VSS O_bar O I CLK   NF=1
+*.PININFO VDD:B VSS:B I:I CLK:I O:O O_bar:O
+X_latch1 I clk_bar CLK VSS VDD net1 latch NF=1
+X_latch2 net1 CLK clk_bar VSS VDD net2 latch NF=1
+X_inv1 CLK VDD VSS clk_bar inv NF=1
+X_inv3 net2 VDD VSS O_bar inv NF=NF
+X_inv4 O_bar VDD VSS O inv NF=NF
+.ends
+
+
+* expanding   symbol:  xschem_lib/DFFRAM_full_custom/tinv.sym # of pins=6
+** sym_path:
+*+ /home/sonic/gf180_tutorial/laygo2_workspace_gf180/xschem_lib/DFFRAM_full_custom/tinv.sym
+** sch_path:
+*+ /home/sonic/gf180_tutorial/laygo2_workspace_gf180/xschem_lib/DFFRAM_full_custom/tinv.sch
+.subckt tinv  X EN ENB VDD VSS Y   NF=2
+*.PININFO X:I ENB:I EN:I Y:O VDD:B VSS:B
+XM1 net2 X VDD VDD pfet_03v3 L=0.28u W=NF*1.7u nf=NF ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+XM2 Y ENB net2 VDD pfet_03v3 L=0.28u W=NF*1.7u nf=NF ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+XM3 Y EN net1 VSS nfet_03v3 L=0.28u W=NF*0.85u nf=NF ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+XM4 net1 X VSS VSS nfet_03v3 L=0.28u W=NF*0.85u nf=NF ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+.ends
+
+
+* expanding   symbol:  xschem_lib/DFFRAM_full_custom/latch.sym # of pins=6
+** sym_path:
+*+ /home/sonic/gf180_tutorial/laygo2_workspace_gf180/xschem_lib/DFFRAM_full_custom/latch.sym
+** sch_path:
+*+ /home/sonic/gf180_tutorial/laygo2_workspace_gf180/xschem_lib/DFFRAM_full_custom/latch.sch
+.subckt latch  IN CLK CLKB VSS VDD OUT   NF=2
+*.PININFO CLKB:I IN:I CLK:I VDD:B VSS:B OUT:O
+X_tinv1 IN CLK CLKB VDD VSS net1 tinv NF=NF
+X_inv1 net1 VDD VSS OUT inv NF=NF
+X_tinv_small1 OUT CLKB CLK VDD VSS net1 tinv_small
+.ends
+
+
+* expanding   symbol:  xschem_lib/DFFRAM_full_custom/tinv_small.sym # of pins=6
+** sym_path:
+*+ /home/sonic/gf180_tutorial/laygo2_workspace_gf180/xschem_lib/DFFRAM_full_custom/tinv_small.sym
+** sch_path:
+*+ /home/sonic/gf180_tutorial/laygo2_workspace_gf180/xschem_lib/DFFRAM_full_custom/tinv_small.sch
+.subckt tinv_small  X EN ENB VDD VSS Y
+*.PININFO X:I ENB:I EN:I Y:O VDD:B VSS:B
+XM1 net2 X VDD VDD pfet_03v3 L=0.28u W=1.7u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+XM2 Y ENB net2 VDD pfet_03v3 L=0.28u W=1.7u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+XM3 Y EN net1 VSS nfet_03v3 L=0.28u W=0.85u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+XM4 net1 X VSS VSS nfet_03v3 L=0.28u W=0.85u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u'
++ pd='2*int((nf+1)/2) * (W/nf + 0.18u)' ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W'
++ sa=0 sb=0 sd=0 m=1
+.ends
+
+.end

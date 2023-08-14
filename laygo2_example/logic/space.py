@@ -18,8 +18,8 @@ cell_type = 'space'
 nf_list = [1,2,4,8,14]
 
 # Templates
-tpmos_name = 'pmos_sky'
-tnmos_name = 'nmos_sky'
+tpmos_name = 'pmos'
+tnmos_name = 'nmos'
 
 # Grids
 pg_name = 'placement_basic'
@@ -59,8 +59,8 @@ for nf in nf_list:
    
 # 3. Create istances.
    print("Create instances")
-   nspace = templates['nmos13_fast_space_1x'].generate(name='nspace',                 shape=[nf, 1])
-   pspace = templates['pmos13_fast_space_1x'].generate(name='pspace', transform='MX', shape=[nf, 1])
+   nspace = templates['nmos180_fast_space_1x'].generate(name='nspace',                 shape=[nf, 1])
+   pspace = templates['pmos180_fast_space_1x'].generate(name='pspace', transform='MX', shape=[nf, 1])
    
 # 4. Place instances.
    dsn.place(grid=pg, inst=nspace, mn=[0,0])
@@ -83,7 +83,7 @@ for nf in nf_list:
 # 7. Export to physical database.
    print("Export design")
    print("")
-   laygo2.interface.magic.export(lib, filename=ref_dir_MAG_exported+libname+'_'+cellname+'.tcl', cellname=None, libpath=ref_dir_layout, scale=1, reset_library=False, tech_library='sky130A')
+   laygo2.interface.magic.export(lib, filename=ref_dir_MAG_exported+libname+'_'+cellname+'.tcl', cellname=None, libpath=ref_dir_layout, scale=tech.scale, reset_library=False, tech_library=tech.name)
       
    # 8. Export to a template database file.
    nat_temp = dsn.export_to_template()

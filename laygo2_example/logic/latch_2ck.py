@@ -73,16 +73,9 @@ for nf in nf_list:
    _track = [None, r23.mn(tinv0.pins['EN'])[0,1]]
    rclk0 = dsn.route_via_track(grid=r23, mn=_mn, track=_track)
    
-   _mn = [r23.mn(tinv0.pins['O'])[0], r23.mn(tinv_small0.pins['O'])[0]]
-   dsn.route(grid=r23, mn=_mn, via_tag=[False, True])
-   _mn = [r23.mn(tinv_small0.pins['O'])[0], r23.mn(inv0.pins['I'])[0]]
-   _track = [None, r23.mn(tinv_small0.pins['O'])[1,1]] 
-   dsn.route_via_track(grid=r23, mn=_mn, track=_track)  
-#    _track[1] += 1
-#    _mn = [r34.mn(tinv0.pins['O'])[0], r34.mn(tinv_small0.pins['O'])[0]]
-#    dsn.route_via_track(grid=r34, mn=_mn, track=_track)
-#    _mn = [r34.mn(tinv_small0.pins['O'])[0], r34.mn(inv0.pins['I'])[0]]
-#    dsn.route_via_track(grid=r34, mn=_mn, track=_track)
+   _mn = [r23.mn(tinv0.pins['O'])[1], r23.mn(tinv_small0.pins['O'])[1], r23.mn(inv0.pins['I'])[1]]
+   _track = [None, r23.mn(tinv0.pins['O'])[1][1]] 
+   dsn.route_via_track(grid=r23, mn=_mn, track=_track)
    
    _track = [None,(r23.mn(tinv_small0.pins['I'])[0,1]+r23.mn(tinv_small0.pins['I'])[1,1])/2]
    _mn = [r23.mn(tinv_small0.pins['I'])[0], r23.mn(inv0.pins['O'])[0]]
@@ -106,7 +99,7 @@ for nf in nf_list:
    print("Export design")
    
    # Uncomment for BAG export
-   laygo2.interface.magic.export(lib, filename=ref_dir_MAG_exported +libname+'_'+cellname+'.tcl', cellname=None, libpath=ref_dir_layout, scale=0.1, reset_library=False, tech_library=tech.name)
+   laygo2.interface.magic.export(lib, filename=ref_dir_MAG_exported +libname+'_'+cellname+'.tcl', cellname=None, libpath=ref_dir_layout, scale=tech.scale, reset_library=False, tech_library=tech.name)
    
    # 8. Export to a template database file.
    nat_temp = dsn.export_to_template()

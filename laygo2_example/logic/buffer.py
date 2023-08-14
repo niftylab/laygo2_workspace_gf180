@@ -61,7 +61,7 @@ for nf in nf_list:
 
 # 4. Place instances.
    dsn.place(grid=pg, inst=inv0, mn=[0,0])
-   dsn.place(grid=pg, inst=inv1, mn=pg.mn.bottom_right(inv0))
+   dsn.place(grid=pg, inst=inv1, mn=pg.mn.bottom_right(inv0)-[2,0])
 
 # 5. Create and place wires.
    print("Create wires")
@@ -86,7 +86,7 @@ for nf in nf_list:
    print("Export design")
    
 # Uncomment for BAG export
-   laygo2.interface.magic.export(lib, filename=ref_dir_MAG_exported +libname+'_'+cellname+'.tcl', cellname=None, libpath=ref_dir_layout, scale=0.1, reset_library=False, tech_library=tech.name)
+   laygo2.interface.magic.export(lib, filename=ref_dir_MAG_exported +libname+'_'+cellname+'.tcl', cellname=None, libpath=ref_dir_layout, scale=tech.scale, reset_library=False, tech_library=tech.name)
    
 # 8. Export to a template database file.
    nat_temp = dsn.export_to_template()

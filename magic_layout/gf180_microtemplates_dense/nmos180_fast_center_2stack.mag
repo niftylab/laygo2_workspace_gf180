@@ -1,7 +1,7 @@
 magic
 tech gf180mcuC
 magscale 1 10
-timestamp 1683428588
+timestamp 1684135447
 << nmos >>
 rect 60 306 120 476
 rect 240 306 300 476
@@ -34,6 +34,18 @@ rect 150 413 210 459
 rect 150 319 210 365
 rect 330 413 390 459
 rect 330 319 390 365
+<< psubdiff >>
+rect -44 70 44 84
+rect -44 -70 -30 70
+rect 30 -70 44 70
+rect -44 -84 44 -70
+rect 316 70 404 84
+rect 316 -70 330 70
+rect 390 -70 404 70
+rect 316 -84 404 -70
+<< psubdiffcont >>
+rect -30 -70 30 70
+rect 330 -70 390 70
 << polysilicon >>
 rect -44 650 120 666
 rect -44 580 -30 650
@@ -80,4 +92,24 @@ rect 316 365 404 413
 rect 316 319 330 365
 rect 390 319 404 365
 rect 316 280 404 319
+rect -44 70 44 84
+rect -44 -70 -30 70
+rect 30 -70 44 70
+rect -44 -84 44 -70
+rect 316 70 404 84
+rect 316 -70 330 70
+rect 390 -70 404 70
+rect 316 -84 404 -70
+<< via1 >>
+rect -30 -70 30 70
+rect 330 -70 390 70
+<< metal2 >>
+rect -50 70 50 84
+rect -50 -70 -30 70
+rect 30 -70 50 70
+rect -50 -84 50 -70
+rect 310 70 410 84
+rect 310 -70 330 70
+rect 390 -70 410 70
+rect 310 -84 410 -70
 << end >>
