@@ -17,7 +17,7 @@ cell_type = 'and4'
 nf_list = [1,2]
 abut = [2,0]
 # Templates
-tpmos_name = 'pmos_'
+tpmos_name = 'pmos'
 tnmos_name = 'nmos'
 # Grids
 pg_name = 'placement_basic'
@@ -91,12 +91,12 @@ for nf in nf_list:
     pvss0 = dsn.pin(name='VSS', grid=r12, mn=r12.mn.bbox(rvss0))
     pvdd0 = dsn.pin(name='VDD', grid=r12, mn=r12.mn.bbox(rvdd0))
 
-# 7. Export to physical database.
-print("Export design")
+    # 7. Export to physical database.
+    print("Export design")
 
-# Uncomment for BAG export
-laygo2.interface.magic.export(lib, filename=ref_dir_MAG_exported +libname+'_'+cellname+'.tcl', cellname=None, libpath=ref_dir_layout, scale=tech.scale, reset_library=False, tech_library=tech.name)
+    # Uncomment for BAG export
+    laygo2.interface.magic.export(lib, filename=ref_dir_MAG_exported +libname+'_'+cellname+'.tcl', cellname=None, libpath=ref_dir_layout, scale=tech.scale, reset_library=False, tech_library=tech.name)
 
-# 8. Export to a template database file.
-nat_temp = dsn.export_to_template()
-laygo2.interface.yaml.export_template(nat_temp, filename=ref_dir_export+libname+'_templates.yaml', mode='append')
+    # 8. Export to a template database file.
+    nat_temp = dsn.export_to_template()
+    laygo2.interface.yaml.export_template(nat_temp, filename=ref_dir_export+libname+'_templates.yaml', mode='append')

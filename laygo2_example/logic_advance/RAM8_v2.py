@@ -60,54 +60,31 @@ buf_out = list()
 buf_we = list()
 buf_sel = list()
 # netname={'I0':'SCAN_GATE_VALUE','I1':'DFF_DAT/O','EN0':'SCAN_GATE','EN1':'INV_GATE/O','O':'MUX_DAT/O','VSS':'VSS','VDD':'VDD:'}
-_netname = dict()
-for i in range(32):
-    _netname['Do'+str(i)] = 'Do'+str(i)
-    _netname['Di'+str(i)] = 'Di'+str(i)+'_buf'
-_netname['CLK'] = 'CLK_buf'
-_netname['RE'] = 'RE_buf'
-_netname['VDD'] = 'VDD'
-_netname['VSS'] = 'VSS'
-for i in range(4):
-    _netname['WE'+str(i)] = 'we'+str(i)+'_buf'
 #_netname['SEL'] = 'SEL0'
 for i in range(int(words_num/2)):
-    netname = copy.deepcopy(_netname)
-    netname['SEL'] = 'SEL'+str(i*2)
-    words.append(tlogic_adv['word_v2_'+str(nf)+'x'].generate(name='word'+str(i*2+1), netname=netname))
-    netname = copy.deepcopy(_netname)
-    netname['SEL'] = 'SEL'+str(i*2+1)
-    words.append(tlogic_adv['word_v2_'+str(nf)+'x'].generate(name='word'+str((i+1)*2),transform='MX', netname=netname))
+    words.append(tlogic_adv['word_v2_'+str(nf)+'x'].generate(name='word'+str(i*2+1)))
+    words.append(tlogic_adv['word_v2_'+str(nf)+'x'].generate(name='word'+str((i+1)*2),transform='MX'))
 
 for i in range(words_num):
-    buf_sel.append(tlogic_prim['ck_buf_'+str(nf*2)+'x'].generate(name='buf_sel'+str(i+1),\
-                   netname={'I':'Y'+str(i),'O':'SEL'+str(i),'VSS':'VSS','VDD':'VDD'}))
+    buf_sel.append(tlogic_prim['ck_buf_'+str(nf*2)+'x'].generate(name='buf_sel'+str(i+1)))
 for i in range(32):
-    buf_in.append(tlogic_prim['ck_buf_'+str(nf*2)+'x'].generate(name='buf_in'+str(i+1),transform='MY',\
-                   netname={'I':'Di'+str(i),'O':'Di'+str(i)+'_buf','VSS':'VSS','VDD':'VDD'}))  
-    buf_out.append(tlogic_prim['ck_buf_'+str(nf)+'x'].generate(name='buf_out'+str(i+1),transform='MY',\
-                   netname={'I':'Do'+str(i),'O':'Do'+str(i)+'_buf','VSS':'VSS','VDD':'VDD'}))   
+    buf_in.append(tlogic_prim['ck_buf_'+str(nf*2)+'x'].generate(name='buf_in'+str(i+1),transform='MY'))  
+    buf_out.append(tlogic_prim['ck_buf_'+str(nf)+'x'].generate(name='buf_out'+str(i+1),transform='MY'))   
 for i in range(4):
-    buf_we.append(tlogic_prim['ck_buf_'+str(nf)+'x'].generate(name='buf_we'+str(i+1),\
-                   netname={'I':'WE'+str(i),'O':'WE'+str(i)+'_buf','VSS':'VSS','VDD':'VDD'})) 
-_netname = {'A0':'A0', 'A1':'A1', 'A2':'A2','EN':'EN'}
-for i in range(8):
-    _netname['Y'+str(i)] = 'Y'+str(i)
-dec8 = tlogic_adv['dec3x8_'+str(nf)+'x'].generate(name='dec8', netname=_netname)
+    buf_we.append(tlogic_prim['ck_buf_'+str(nf)+'x'].generate(name='buf_we'+str(i+1))) 
+dec8 = tlogic_adv['dec3x8_'+str(nf)+'x'].generate(name='dec8')
 # pA0 = dsn.pin(name='A0', grid=r34, mn=r34.mn.bbox(dec8.pins['A0']))
 # pA1 = dsn.pin(name='A1', grid=r34, mn=r34.mn.bbox(dec8.pins['A1']))
 # pA2 = dsn.pin(name='A2', grid=r34, mn=r34.mn.bbox(dec8.pins['A2']))
 # pEN = dsn.pin(name='EN', grid=r34, mn=r34.mn.bbox(dec8.pins['EN']))
-buf_ck = tlogic_prim['ck_buf_'+str(nf*2)+'x'].generate(name='buf_ck', transform='MY',\
-                   netname={'I':'CLK','O':'CLK_buf','VSS':'VSS','VDD':'VDD'})
-buf_re = tlogic_prim['ck_buf_'+str(nf*2)+'x'].generate(name='buf_re',\
-                   netname={'I':'RE','O':'RE_buf','VSS':'VSS','VDD':'VDD'})
+buf_ck = tlogic_prim['ck_buf_'+str(nf*2)+'x'].generate(name='buf_ck', transform='MY')
+buf_re = tlogic_prim['ck_buf_'+str(nf*2)+'x'].generate(name='buf_re')
 
-dummy0 = tlogic_prim['space_8x'].generate(name='dummy0', netname={'VSS':'VSS','VDD':'VDD'})
-dummy1 = tlogic_prim['space_4x'].generate(name='dummy1', netname={'VSS':'VSS','VDD':'VDD'})
-dummy2 = tlogic_prim['space_14x'].generate(name='dummy2', netname={'VSS':'VSS','VDD':'VDD'})
-dummy3 = tlogic_prim['space_14x'].generate(name='dummy3', netname={'VSS':'VSS','VDD':'VDD'})
-dummy4 = tlogic_prim['space_14x'].generate(name='dummy4', netname={'VSS':'VSS','VDD':'VDD'})
+dummy0 = tlogic_prim['space_8x'].generate(name='dummy0')
+dummy1 = tlogic_prim['space_4x'].generate(name='dummy1')
+dummy2 = tlogic_prim['space_14x'].generate(name='dummy2')
+dummy3 = tlogic_prim['space_14x'].generate(name='dummy3')
+dummy4 = tlogic_prim['space_14x'].generate(name='dummy4')
 # 4. Place instances.
 mn_ref = [0,0]
 for i in range(int(words_num/2)):
